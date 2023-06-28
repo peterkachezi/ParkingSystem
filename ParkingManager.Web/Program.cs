@@ -1,6 +1,5 @@
 using ParkingManager.BLL.Repositories.ApplicationUserModule;
 using ParkingManager.BLL.Repositories.MpesaStkModule;
-using ParkingManager.BLL.Repositories.TimeSlotModule;
 using ParkingManager.DAL.MapperProfiles;
 using ParkingManager.DAL.Modules;
 using ParkingManager.Web.Extensions;
@@ -36,8 +35,6 @@ builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
-
-builder.Services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
 
 builder.Services.AddTransient<IMessagingService, MessagingService>();
 
@@ -89,10 +86,7 @@ app.UseCors("CorsPolicy");
 app.MapHub<SignalrServer>("/signalrServer");
 
 app.UseEndpoints(endpoints =>
-{
-
-
-    
+{    
     endpoints.MapControllerRoute(
     name: "Admin",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

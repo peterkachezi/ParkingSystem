@@ -162,14 +162,14 @@
 							<a href="#"><i class="fe fe-layout"></i> <span>Manage Booking</span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
 
 							<ul>
-								<li><a href="@Url.Action("", "Appointments")">Booking</a></li>
+								<li><a href="@Url.Action("", "Booking")">Booking</a></li>
 
 							</ul>
 						</li>
 
 
 						<li>
-							<a href="@Url.Action("", "Patients")"><i class="fe fe-user"></i> <span>Customers</span></a>
+							<a href="@Url.Action("", "Customers")"><i class="fe fe-user"></i> <span>Customers</span></a>
 						</li>
 
 						<li class='sub-menu'>
@@ -177,16 +177,16 @@
 							<a href="#"><i class="fe fe-clock"></i> <span>Parking Slots</span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
 
 							<ul>
-								<li><a href="~/Admin/ParkingSlots">Create Slots</a></li>
+								<li><a href="~/Admin/ParkingSlots">Slots</a></li>
 
-								<li><a href="@Url.Action("ViewSlots", "TimeSlots")">View Slots</a></li>
-
+@*								<li><a href="@Url.Action("ViewSlots", "TimeSlots")">View Slots</a></li>
+*@
 							</ul>
 						</li>
 
-						<li>
+						@*<li>
 							<a href="@Url.Action("", "Enquiries")"><i class="fe fe-vector"></i> <span>Enquiries</span></a>
-						</li>
+						</li>*@
 						@*
 						<li class='sub-menu'>
 						<a href="#"><i class="fe fe-code"></i> <span>Blogs </span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
@@ -195,7 +195,7 @@
 						<li><a href="@Url.Action("", "Blogs")">Blogs</a></li>
 						</ul>
 						</li>*@
-
+@*
 						<li class="menu-title">
 							<span>Transactions</span>
 						</li>
@@ -210,7 +210,7 @@
 
 							</ul>
 
-						</li>
+						</li>*@
 
 						<li class="menu-title">
 							<span>User</span>
@@ -227,7 +227,7 @@
 							</ul>
 						</li>
 
-						<li class="menu-title">
+			@*			<li class="menu-title">
 							<span>Reports</span>
 						</li>
 
@@ -238,7 +238,9 @@
 								<li><a href="@Url.Action("", "AppointmentReports")">Appointment </a></li>
 								<li><a href='#settings'>Patient Reports</a></li>
 							</ul>
-						</li>
+						</li>*@
+
+
 					</ul>
 				</div>
 			</div>

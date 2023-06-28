@@ -2,9 +2,9 @@
 using ParkingManager.DAL.Modules;
 using ParkingManager.DTO.ApplicationUserModule;
 using ParkingManager.DTO.BookingModule;
+using ParkingManager.DTO.CustomerModule;
 using ParkingManager.DTO.MpesaStkModule;
 using ParkingManager.DTO.ParkingSlotModule;
-using ParkingManager.DTO.PatientModule;
 
 
 

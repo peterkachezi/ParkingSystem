@@ -3,6 +3,7 @@ using ParkingManager.BLL.Repositories.MpesaStkModule;
 using ParkingManager.DTO.DashboardModule;
 using Microsoft.AspNetCore.Mvc;
 using ParkingManager.BLL.Repositories.BookingModule;
+using ParkingManager.BLL.Repositories.ParkingSlotModule;
 
 namespace ParkingManager.Web.Areas.Admin.Controllers
 {
@@ -13,6 +14,8 @@ namespace ParkingManager.Web.Areas.Admin.Controllers
 
 		private readonly IBookingRepository bookingRepository;
 
+		private readonly IParkingSlotRepository parkingSlotRepository;
+
 		private readonly IApplicationUserRepository applicationUserRepository;
 		public DashboardController(
 
@@ -20,7 +23,9 @@ namespace ParkingManager.Web.Areas.Admin.Controllers
 
 			IPaymentRepository paymentRepository,
 
-			 IBookingRepository bookingRepository
+			 IBookingRepository bookingRepository,
+
+			 IParkingSlotRepository parkingSlotRepository
 
 		   )
 		{
@@ -30,6 +35,8 @@ namespace ParkingManager.Web.Areas.Admin.Controllers
 			this.applicationUserRepository = applicationUserRepository;
 
 			this.bookingRepository = bookingRepository;
+
+			this.parkingSlotRepository = parkingSlotRepository;
 		}
 
 		public async Task<IActionResult> Index()
@@ -41,16 +48,30 @@ namespace ParkingManager.Web.Areas.Admin.Controllers
 
 				var users = await applicationUserRepository.GetAllUsers();
 
+				var customers = bookingRepository.GetAllCustomer().ToList();
+
+				var bookings = await bookingRepository.GetAll();
+
+				var parkingLots = await parkingSlotRepository.GetAll();
+
 				ViewBag.Revenue = revenue;
+
+				ViewBag.Customers = customers.Count();
+
+				ViewBag.Booking = bookings.Count();
+
+				ViewBag.AvailableParkingLots = parkingLots.Where(x => x.IsBooked == false).Count();
+
+				ViewBag.BookedParkingLots = parkingLots.Where(x => x.IsBooked == true).Count();
 
 				DashboardDTO data = new DashboardDTO()
 				{
 
 				};
 
-				data.customers = bookingRepository.GetAllCustomer().Take(5).OrderBy(x => x.CreateDate).ToList();
+				data.customers = customers.Take(5).OrderBy(x => x.CreateDate).ToList();
 
-				data.bookingDTOs = (await bookingRepository.GetAll()).Take(5).OrderBy(x => x.CreateDate).ToList();
+				data.bookingDTOs = bookings.Take(5).OrderBy(x => x.CreateDate).ToList();
 
 				data.SystemsUsers = users.Where(x => x.RoleName == "Doctor").Take(5).ToList();
 

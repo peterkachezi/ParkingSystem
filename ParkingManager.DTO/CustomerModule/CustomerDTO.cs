@@ -1,6 +1,6 @@
 ﻿
 
-namespace ParkingManager.DTO.PatientModule
+namespace ParkingManager.DTO.CustomerModule
 {
     public class CustomerDTO
 	{

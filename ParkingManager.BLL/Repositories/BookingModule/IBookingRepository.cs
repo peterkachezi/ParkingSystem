@@ -1,5 +1,5 @@
 ﻿using ParkingManager.DTO.BookingModule;
-using ParkingManager.DTO.PatientModule;
+using ParkingManager.DTO.CustomerModule;
 
 namespace ParkingManager.BLL.Repositories.BookingModule
 {

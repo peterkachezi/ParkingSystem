@@ -69,11 +69,11 @@
 								<i class="fe fe-users"></i>
 							</span>
 							<div class="dash-count">
-								<h3>@ViewBag.Patients</h3>
+								<h3>@ViewBag.Customers</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Patients</h6>
+							<h6 class="text-muted">Customers</h6>
 							<div class="progress progress-sm">
 								<div class="progress-bar bg-primary w-50"></div>
 							</div>
@@ -91,11 +91,11 @@
 								<i class="fe fe-money"></i>
 							</span>
 							<div class="dash-count">
-								<h3>@ViewBag.Appointment</h3>
+								<h3>@ViewBag.Booking</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Appointment</h6>
+							<h6 class="text-muted">Booking</h6>
 							<div class="progress progress-sm">
 								<div class="progress-bar bg-danger w-50"></div>
 							</div>
@@ -112,11 +112,11 @@
 								<i class="fe fe-users"></i>
 							</span>
 							<div class="dash-count">
-								<h3>@ViewBag.PendingAppointment</h3>
+								<h3>@ViewBag.AvailableParkingLots</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Pending Appointments</h6>
+							<h6 class="text-muted">Available Parking Lots</h6>
 							<div class="progress progress-sm">
 								<div class="progress-bar bg-primary w-50"></div>
 							</div>
@@ -134,11 +134,11 @@
 								<i class="fe fe-folder"></i>
 							</span>
 							<div class="dash-count">
-								<h3>@ViewBag.Revenue</h3>
+								<h3>@ViewBag.BookedParkingLots</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Revenue</h6>
+							<h6 class="text-muted">Booked Parking Lots</h6>
 							<div class="progress progress-sm">
 								<div class="progress-bar bg-warning w-50"></div>
 							</div>
@@ -188,7 +188,8 @@
 								<thead>
 									<tr>
 										<th>SN.</th>
-										<th>Speciality</th>
+										<th>Parking Name</th>
+										<th>FirstName</th>
 										<th>Entry Date</th>
 										@*<th>Status</th>*@
 									</tr>
@@ -204,6 +205,7 @@
 											<tr>
 												<td>@count</td>
 												<td>@item.SlotName</td>
+												<td>@item.FirstName</td>
 												<td>@item.CreateDate.ToShortDateString()</td>
 											@*	<td>
 													@{

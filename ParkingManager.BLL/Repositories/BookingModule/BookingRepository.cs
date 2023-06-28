@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ParkingManager.BLL.Utils;
 using ParkingManager.DAL.Modules;
 using ParkingManager.DTO.BookingModule;
-using ParkingManager.DTO.PatientModule;
+using ParkingManager.DTO.CustomerModule;
 
 namespace ParkingManager.BLL.Repositories.BookingModule
 {

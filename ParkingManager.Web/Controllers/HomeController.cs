@@ -7,7 +7,6 @@ using System.Diagnostics;
 using ParkingManager.BLL.Repositories.BookingModule;
 using ParkingManager.DTO.DashboardModule;
 using ParkingManager.DTO.BookingModule;
-using ParkingManager.BLL.Repositories.TimeSlotModule;
 using ParkingManager.BLL.Repositories.ParkingSlotModule;
 
 namespace ParkingManager.Controllers
