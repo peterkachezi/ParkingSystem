@@ -1,0 +1,171 @@
+﻿@model IEnumerable<ParkingManager.DTO.MpesaStkModule.MpesaPaymentDTO>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<link href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+<body>
+    <div class="page-wrapper" style="min-height: 754px;background-color: #f8f9fa;">
+        <div class="content container-fluid">
+
+            <div class="row">
+                <div class="col-sm-3 col-auto">
+                    <h3 class="page-title">List of Transactions</h3>
+                </div>
+                <div class="col-md-9">
+                    <button type="button" class="btn btn-success btn-sm  pull-right" data-toggle="modal" data-target="#modaService" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus-circle"></i>  </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <table id="specialist" class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>SN.</th>
+
+                                <th>Receipt No</th>
+
+                       
+
+                                <th>Phone Number</th>
+
+                                <th>Trans Id</th>
+
+                                <th>Amount Paid</th>
+
+                                <th>Trans Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @if (Model != null && Model.Count() > 0)
+                            {
+                                int count = 1;
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@count</td>
+
+                                        <td>@item.ReceiptNo</td>
+
+                               
+
+                                        <td>@item.PhoneNumber</td>
+
+                                        <td>@item.TransactionNumber</td>
+
+                                        <td>@item.Amount</td>
+
+                                        <td>@item.NewTransactionDate.ToString("MM/dd/yyyy")</td>
+
+                                    </tr>
+                                    count++;
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="modaService" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="frmServices">
+                        <div class="row form-row">
+
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" name="FirstName" id="txtFirstName" placeholder="e.g John">
+                                </div>
+                            </div>
+
+              
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" name="LastName" id="txtLastName" placeholder="e.g Doe">
+                                </div>
+                            </div>
+                        
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control" name="PhoneNumber" id="txtPhoneNumber" placeholder="e.g 254704509484">
+                                </div>
+                            </div>
+
+
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Amount Paid</label>
+                                    <input type="text" class="form-control" name="Amount" id="txtAmount" placeholder="e.g 1000">
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Transaction Number </label>
+                                    <input type="text" class="form-control" name="TransactionNumber" id="txtTransactionNumber" placeholder="e.g QG591L6XJ9">
+                                </div>
+                            </div>
+                    
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Date paid </label>
+                                    <input type="date" class="form-control" name="TransactionDate" id="txtTransactionDate" placeholder="2500">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSubmitService" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="~/ParkingManager/reconcilePayment.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#specialist').DataTable();
+    });
+</script>
+
+
+
+

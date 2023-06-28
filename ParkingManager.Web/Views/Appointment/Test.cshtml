@@ -1,0 +1,499 @@
+﻿@{
+}
+
+<link rel="stylesheet" href="~/chat/bootstrap.min.css">
+
+<body class="body">
+
+
+
+    <div class="center-screen" style="margin-bottom:5rem;">
+        <div class=" card col-md-8 mt-5">
+            <div class="card-body">
+                <div class="container mb-3 ">
+                    <form>
+
+                        <div class="mt-3">
+                            <h4>Book Appointment</h4>
+                        </div>
+
+                        <hr class="new3" />
+
+                        <div class="row" id="divSlots">
+
+                            <div class="col-md-4">
+                                <div id="txtAppointmentDate" onchange="GetSlotsByDate(this)"></div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div id="slots" class="row ">
+                                </div>
+                                <div id="divShowMessage" style="display:none;">
+                                    <div class="alert alert-danger" role="alert" id="error">
+                                        <div id="divmessage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" id="divPersonalDetails">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">First Name :</label>
+                                    <input type="text" class="form-control" id="txtFirstName" name="FirstName" onchange="GetBillingDetails(this)">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Last Name :</label>
+                                    <input type="text" class="form-control" id="txtLastName" name="LastName" onchange="GetBillingDetails(this)">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Phone Number :</label>
+                                    <input type="text" class="form-control" id="txtPhoneNumber" name="PhoneNumber" onchange="GetBillingDetails(this)">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email :</label>
+                                    <input type="text" class="form-control" id="txtEmail" name="Email" onchange="GetBillingDetails(this)">
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mt-3">
+                            <div class="col-md-6 col-sm-5" id="DivPaymentMethods">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Mpesa Express
+                                            </button>
+                                        </h2>
+
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+
+                                            <div class="accordion-body">
+
+                                                <!----------->
+
+                                                <div class="panel-body">
+                                                    <div class="clearfix"></div>
+                                                    <div id="StkStatus">
+
+                                                        <div id="divCloseSuccess">
+                                                            <div class="divsuccess" style="display:none" id="successMsg">
+                                                                <div class="alert alert-success" role="alert" id="error" style="padding: 20px;border-radius: 5px;border: 1px solid;">
+                                                                    <p id="showsuccess"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div id="divCloseError">
+                                                            <div class="divError" style="display:none" id="errorMsg">
+                                                                <div class="alert alert-danger" role="alert" id="error" style="padding: 20px;border-radius: 5px;border: 1px solid;">
+                                                                    <p id="showError"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <ol class="mt 10" id="payment_instructions">
+
+                                                        <li>Enter your Safaricom Mobile Phone Number to pay with below and click Pay</li>
+
+                                                        <li>When prompted, enter MPESA PIN  </li>
+
+                                                        <li>Click 'Complete' Button once you receive MPESA confirmation </li>
+
+                                                    </ol>
+
+                                                    <ol class="mt10" id="recon_instructions" style="display: none;">
+
+                                                        <li>Open the text you have received from MPESA  </li>
+
+                                                        <li>Enter account reference detail below e.g PF_ECITIZEN_SDSDS_10 </li>
+
+                                                        <li>Click 'Confirm' button. </li>
+                                                    </ol>
+
+                                                    <input type="text" id="txtMpesaPhoneNumber" value="254704509484" class="form-control mb20 mt10" name="stk_msisdn" required="">
+                                                    <input type="text" id="stk_reference" value="" class="form-control mb20 mt10" name="stk_reference" placeholder="e.g PF_ECITIZEN_SDSDS_10" style="display: none;">
+
+                                                    <button id="prompt_button" class="btn btn-success mt-3" onclick="SendStkPush()">Pay</button>
+
+
+                                                    <div class="mt-3" id="divStkStatus" style="display: none;">
+
+                                                        <button id="complete_button" class="btn btn-success" onclick="Complete()">Complete</button>
+
+                                                        <button id="complete_recon_button" class="btn btn-success" onclick="CompleteRecon()">Confirm</button>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!----------->
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Mpesa Paybill
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+
+                                                <!---------------->
+
+                                                <div class="panel-body">
+                                                    <img class="media-object thumbnail pull-left" src="/img/payment/mpesa.jpg" alt="" style="margin-right:10px; width:116px;">
+                                                    <div class="clearfix"></div>
+                                                    <div id="MpesaStatus">
+                                                        <p class="alert alert-success m0" style="padding:20px;  border-radius:5px;  border: 1px solid">
+                                                            We have received Ksh.
+                                                            0 Please Pay Ksh. 1050 to complete the payment. If you have paid the full amount. Wait a few minutes then Click 'Complete'
+                                                        </p>
+                                                    </div>
+                                                    <ol class="mt10">
+                                                        <li>Go to M-PESA on your phone</li>
+                                                        <li>Select Pay Bill option</li>
+                                                        <li>Enter Business no. <span style="font-size:12px; font-weight: bold;">206206</span></li>
+                                                        <li>Enter Account no. <span style="font-size:12px; font-weight: bold;">IMPGUJK</span></li>
+                                                        <li>Enter the Amount. KES 1050</li>
+                                                        <li>Enter your M-PESA PIN and Send</li>
+                                                        <li>You will receive a confirmation SMS from MPESA</li>
+                                                    </ol>
+                                                    <input style="display: none" type="text" id="maphone" placeholder="Enter Mobile Number You used to pay" class="form-control mb20 mt10" name="ref">
+                                                    <input style="display: none" type="text" id="maref" placeholder="Enter Mpesa Reference" class="form-control mb20 mt10" name="ref">
+                                                    <button class="btn btn-success" onclick="PayMpesa('https://pesaflow.ecitizen.go.ke/PaymentAPI/Gateway.php', '24', 'IMPGUJK', 'VEBJBEM', '1050', 'http://dci.ecitizen.go.ke/payment/invoice/4583659/callback?status=success&amp;context=')">Complete</button>
+                                                </div>
+
+                                                <!---------------->
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                Debit/Credit/Prepaid Card
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+
+                                                <!------------->
+
+                                                <div class="panel-body">
+                                                    <img class="media-object thumbnail pull-left" src="/img/payment/mastercard.jpg" alt="" style="margin-right:10px; width:65px;">
+                                                    <img class="media-object thumbnail pull-left" src="/img/payment/visa.jpg" alt="" style="margin-right:10px; width:65px;">
+                                                    <div class="clearfix">
+                                                    </div>
+
+
+                                                    <div id="CardStatus">
+                                                        <p class="alert alert-success m0" style="padding:20px; color:000; border-radius:5px; background:fff; border: 1px solid 428bca; margin:0">To Pay your bill ( KES 1081.50) via Your Visa or MasterCard. Enter Your Card Details Below then click 'Submit'</p>
+                                                        <br>
+                                                        <p class="alert alert-warning m0" style="padding:20px; color:000; border-radius:5px; background:fff; border: 1px solid 428bca; margin:0">Please Note : Use of stolen cards is an offence punishable by law .</p>
+
+                                                    </div>
+                                                    <div id="CardForm">
+                                                        <!--<form id="basicForm" action="" class="form-horizontal">-->
+                                                        <form id="moodleform" method="post" action="https://pesaflow.ecitizen.go.ke/PaymentAPI/mpg_processor.php" target="card_page" onsubmit="$('#card_page').show(); $('#CardForm').hide(); $('#option_buttons').show();">
+                                                            <input type="hidden" id="MerchantTrxRef" name="hash" value="MWIzYWUwYzE5ZGZiOWJkM2E3ZDU1NDc1Mjc5YWJiYjliZTJkNjZiYjAwNjFjZTc2ZWZlYTk5YTJmYjkzNTdjOQ==">
+                                                            <input type="hidden" id="MerchantTrxRef" name="MerchantTrxRef" value="VEBJBEM">
+                                                            <input type="hidden" id="currency" name="currency" value="KES">
+                                                            <input type="hidden" id="amount" name="amount" value="1081.50">
+                                                            <input type="hidden" id="invoiceNumber" name="invoiceNumber" value="IMPGUJK">
+                                                            <input type="hidden" id="serviceID" name="serviceID" value="24">
+
+                                                            <div class="clearfix"><br></div>
+                                                            <div class="card-wrapper" data-jp-card-initialized="true">
+                                                                <div class="jp-card-container" style="transform: scale(0.985714);">
+                                                                    <div class="jp-card">
+                                                                        <div class="jp-card-front">
+                                                                            <div class="jp-card-logo jp-card-elo">
+                                                                                <div class="e">e</div>
+                                                                                <div class="l">l</div>
+                                                                                <div class="o">o</div>
+                                                                            </div><div class="jp-card-logo jp-card-visa">Visa</div>
+                                                                            <div class="jp-card-logo jp-card-visaelectron">
+                                                                                Visa<div class="elec">Electron</div>
+                                                                            </div><div class="jp-card-logo jp-card-mastercard">Mastercard</div>
+                                                                            <div class="jp-card-logo jp-card-maestro">Maestro</div>
+                                                                            <div class="jp-card-logo jp-card-amex"></div>
+                                                                            <div class="jp-card-logo jp-card-discover">discover</div>
+                                                                            <div class="jp-card-logo jp-card-dinersclub"></div>
+                                                                            <div class="jp-card-logo jp-card-dankort">
+                                                                                <div class="dk">
+                                                                                    <div class="d"></div><div class="k"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="jp-card-logo jp-card-jcb">
+                                                                                <div class="j">J</div>
+                                                                                <div class="c">C</div><div class="b">B</div>
+                                                                            </div><div class="jp-card-lower">
+                                                                                <div class="jp-card-shiny"></div>
+                                                                                <div class="jp-card-cvc jp-card-display">•••</div>
+                                                                                <div class="jp-card-number jp-card-display">•••• •••• •••• ••••</div>
+                                                                                <div class="jp-card-name jp-card-display"></div>
+                                                                                <div class="jp-card-expiry jp-card-display" data-before="mm/yyyy" data-after="validdate"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="jp-card-back">
+                                                                            <div class="jp-card-bar"></div>
+                                                                            <div class="jp-card-cvc jp-card-display">•••</div>
+                                                                            <div class="jp-card-shiny"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <input type="text" placeholder="Enter Card Number" id="CardNo" class="form-control mb10 mt10" name="CardNo" required="">
+                                                            <input type="password" placeholder="CVV" id="CVV" class="form-control" name="CVV" required="">
+                                                            <span class="help-block">The last three digits at the back of your card</span>
+                                                            <label for="radioDefault" style="margin-bottom:0 !important;">Expiration Date</label>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-3" style="padding-left:0">
+                                                                    <select class="form-control" id="eMonth" name="eMonth" data-placeholder="Month" required="">
+                                                                        <option value="">Month</option>
+                                                                        <option value="01">01</option>
+                                                                        <option value="02">02</option>
+                                                                        <option value="03">03</option>
+                                                                        <option value="04">04</option>
+                                                                        <option value="05">05</option>
+                                                                        <option value="06">06</option>
+                                                                        <option value="07">07</option>
+                                                                        <option value="08">08</option>
+                                                                        <option value="09">09</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="11">11</option>
+                                                                        <option value="12">12</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-sm-3" style="padding:0">
+                                                                    <select class="form-control" id="eYear" name="eYear" data-placeholder="Year" required="">
+                                                                        <option value="">Year</option>
+                                                                        <option value="14">2014</option>
+                                                                        <option value="15">2015</option>
+                                                                        <option value="16">2016</option>
+                                                                        <option value="17">2017</option>
+                                                                        <option value="18">2018</option>
+                                                                        <option value="19">2019</option>
+                                                                        <option value="20">2020</option>
+                                                                        <option value="21">2021</option>
+                                                                        <option value="22">2022</option>
+                                                                        <option value="23">2023</option>
+                                                                        <option value="24">2024</option>
+                                                                        <option value="25">2025</option>
+                                                                        <option value="26">2026</option>
+                                                                        <option value="27">2027</option>
+                                                                        <option value="28">2028</option>
+                                                                        <option value="29">2029</option>
+                                                                        <option value="30">2030</option>
+                                                                        <option value="31">2031</option>
+                                                                        <option value="32">2032</option>
+                                                                        <option value="33">2033</option>
+                                                                        <option value="34">2034</option>
+                                                                        <option value="35">2035</option>
+                                                                        <option value="36">2036</option>
+                                                                        <option value="37">2037</option>
+                                                                        <option value="38">2038</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <input id="btnCard" type="submit" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-static">
+
+                                                        </form>
+
+                                                        <script type="text/javascript">
+
+                                                            function resetStatus() {
+                                                                //     document.getElementById('moodleform').submit();
+                                                                $("#CardStatus").html("<p class='alert alert-success m0' style='padding:20px; color:000; border-radius:5px; background:fff; border: 1px solid 428bca; margin:0'>To Pay your bill ( KES 1081.50) via Your Visa or MasterCard. Enter Your Card Details Below then click 'Submit'</p>")
+
+                                                            }
+
+                                                            function setStatus(msg) {
+                                                                $("#CardStatus").html("<p class='alert alert-success m0' style='padding:20px; color:000; border-radius:5px; background:fff; border: 1px solid 428bca; margin:0'>" + msg + "</p>")
+
+                                                            }
+                                                        </script>
+                                                    </div>
+                                                    <br>
+                                                    <div class="modal fade bs-example-modal-static in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button aria-hidden="true" data-dismiss="modal" class="close" onclick="setStatus('If your Payment Completed Successfully Click <strong> \'Proceed\' </strong> . In Case Your Payment Failed You Can Click \'Try Again\' ')" type="button" on="">×</button>
+                                                                    <h4 class="modal-title">Processing Payment...</h4>
+                                                                    <span> Do not close this window until your payment processing is complete. </span>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <iframe id="card_page" style="display:none" width="100%" height="400px" name="card_page" frameborder="0"></iframe>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="option_buttons" style="display:none">
+                                                        <button id="btnCard" class="btn btn-success" onclick="confirmStatus('IMPGUJK', '1081.50', 'http://dci.ecitizen.go.ke/payment/invoice/4583659/callback?status=success&amp;context=')">Proceed</button>
+                                                        <button id="Cancel" class="btn btn-danger" onclick="tryAgain('IMPGUJK', '1081.50', 'http://dci.ecitizen.go.ke/payment/invoice/4583659/callback?status=success&amp;context=')">Try Again</button>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+                                                <!------------->
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-5">
+
+                                <div class="card">
+                                    <div class="card-header text-white" style="background-color: #202122;">
+                                        Billing Details
+
+                                    </div>
+                                    <div class="card-body">
+
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <a href="#" class="pull-left">
+                                                    <img style="width:80px;" alt="" src="/img/payment/profile-1.png" class="media-object thumbnail">
+                                                </a>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <div class="event-body smal">
+                                                    <h4 class="subtitle" style="margin-bottom:0;" id="txtPatientName"> </h4>
+                                                    <h4 class="details" style="margin-top:2px;"><small id="txtPatientPhoneNumber"></small></h4>
+                                                    <h4 class="details" style="margin-top:2px;"><small id="txtPatientEmail"></small></h4>
+                                                    <h4 class="details" style="margin-top:2px;"><small>Appointment Date:</small><small id="txtPatientAppDate" class="dateTime"> </small></h4>
+                                                    <h4 class="details" style="margin-top:2px;"><small>Appointment Time:</small><small id="txtPatientAppTime" class="dateTime"> </small></h4>
+                                                    <h4 class="details" style="margin-top:2px;"><small id="txtRefNo">Reference: VEBJBEM</small></h4>
+                                                </div>
+                                            </div>
+
+                                            <hr />
+                                            <div class="mb-1">
+                                                <h4 class="subtitle">Order Summary </h4>
+                                            </div>
+
+
+                                            <h4 class="details">Appointment  <div class="pull-right pr10">KES 31.5</div></h4>
+                                            <h4 class="panel panel-warning panel-alt widget-today total">
+                                                Total
+                                                <div class="pull-right pr10">KES 31.5</div>
+                                            </h4>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                    <div class="mt-3 pull-right">
+                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+
+    .dateTime {
+        color: #0da4f0;
+        font-weight: bold;
+    }
+
+    .total {
+        color: #0da4f0;
+        font-weight: bold;
+    }
+
+
+    .label {
+        display: flex;
+        border: 1px solid;
+        margin: 5px;
+        padding: 10px;
+        cursor: pointer;
+        max-width: 11em;
+        color: #455A64;
+    }
+
+        .label input {
+            position: absolute;
+            display: none;
+            color: #fff !important;
+        }
+
+</style>
+
+<link href="~/SweetAlart/sweetalert.min.css" rel="stylesheet" />
+<script src="~/SweetAlart/sweetalert.min.js"></script>
+<script src="~/ParkingManager/appointment1.js"></script>
+
+
+
+<script>
+
+    $(function() {
+
+        $("#txtAppointmentDate").datepicker();
+
+    });
+
+
+
+
+
+</script>

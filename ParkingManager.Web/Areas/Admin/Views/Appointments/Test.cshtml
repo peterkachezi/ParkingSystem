@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "CreatePayment";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css" />
+
+<body>
+    <div class="page-wrapper" style="min-height: 754px;background-color: #f8f9fa;">
+        <div class="content container-fluid">
+            <div class="card">
+                <div class="card-body">
+
+                    <table id="tblSlots" class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>SN.</th>
+                                <th>Patient Name</th>
+                                <th>Appointment Time</th>
+                                <th>Date Created</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        GetSlots();
+    });
+
+
+    function GetSlots() {
+
+
+        var t = $('#tblSlots').DataTable({
+
+            "ajax": {
+                "url": "/Admin/Appointments/GetAppointments",
+                "type": "GET",
+                "datatype": "json"
+            },
+
+            "columns": [
+
+                { 'data': 'id' },
+
+                { 'data': 'fullName' },
+
+                {
+                    data: null,
+
+                    mRender: function(data, type, row) {
+
+                    return "<p >" + row.newAppDate + "  <br />   " + row.timeSlot + " </p>"
+                                           
+                    }
+                },
+
+                { 'data': 'newCreateDate' },
+
+                 {
+                    data: null,
+
+                    mRender: function (data, type, row) {
+
+                        var status = row.status;
+
+                        if (status == 0) {
+
+                            return "<span class='pending'> Pending Approval </span>"
+                        }
+                        else {
+                            return "<span class='activeUser'> Approved </span>"
+                        }
+
+
+                    }
+                },
+
+                {
+                    data: null,
+
+                    mRender: function (data, type, row) {
+
+                        console.log(data);
+                        var status = row.status;
+
+                        if (status == 0) {
+                            return "<a href='#' class='btn btn-success btn-sm '    onclick=GetAppointment('" + row.id + "'); >Approve </a> / <a href='#' class='btn btn-primary btn-sm'   onclick=GetRescheduleDetails('" + row.id + "'); >Reschedule</a>";
+
+                        }
+
+                        if (status == 1) {
+                            return "<a href='#' class='btn btn-success btn-sm '    onclick=StartVideoCall('" + row.id + "'); >Start Video Call </a> ";
+
+                        }
+
+                    }
+                }
+
+
+
+            ]
+
+        });
+        t.on('order.dt search.dt', function() {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    }
+
+
+
+
+
+
+</script>

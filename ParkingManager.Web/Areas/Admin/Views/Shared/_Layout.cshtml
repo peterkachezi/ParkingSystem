@@ -1,0 +1,326 @@
+﻿@using ParkingManager.DAL.Modules
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+	<title>Greenpark</title>
+
+	<link rel="shortcut icon" type="image/x-icon" href="~/dashboard/assets/img/favicon.ico">
+
+	<link rel="stylesheet" href="~/booking/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="~/dashboard/assets/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="~/dashboard/assets/css/feathericon.min.css">
+
+	<link rel="stylesheet" href="~/dashboard/assets/plugins/morris/morris.css">
+
+	<link rel="stylesheet" href="~/dashboard/assets/css/style.css">
+
+	<link href="~/css/loader.css" rel="stylesheet" />
+
+	<link href="~/css/status.css" rel="stylesheet" />
+
+	<link href="~/SweetAlart/sweetalert.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+	<div class="main-wrapper">
+
+		<div class="header">
+
+			<div class="header-left">
+				<a href="@Url.Action("", "Dashboard")" class="logo">
+					<img src="~/dashboard/assets/img/parking.jpg" alt="Logo">
+				</a>
+				<a href="@Url.Action("", "Dashboard")" class="logo logo-small">
+					<img src="~/dashboard/assets/img/parking.jpg" alt="Logo" width="30" height="30">
+				</a>
+			</div>
+
+			<a href="javascript:void(0);" id="toggle_btn">
+				<i class="fe fe-text-align-left"></i>
+			</a>
+
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="Search here">
+					<button class="btn" type="submit"><i class="fa fa-search"></i></button>
+				</form>
+			</div>
+
+			<a class="mobile_btn" id="mobile_btn">
+				<i class="fa fa-bars"></i>
+			</a>
+
+			<ul class="nav user-menu">
+
+				<li class="nav-item dropdown noti-dropdown">
+					<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+						<i class="fe fe-bell"></i> <span class="badge rounded-pill" id="txtCountNotifications"></span>
+					</a>
+					<div class="dropdown-menu notifications">
+						<div class="topnav-dropdown-header">
+							<span class="notification-title">Notifications</span>
+							<a href="javascript:void(0)" class="clear-noti"> Close </a>
+						</div>
+						<div class="noti-content">
+
+							<ul class="notification-list" id="txtAppointmentSummary">
+							</ul>
+
+
+						</div>
+						<div class="topnav-dropdown-footer">
+							<a href="@Url.Action("", "Appointments")">View Details</a>
+						</div>
+					</div>
+				</li>
+
+
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+						<span class="user-img">
+							<img class="rounded-circle" src="~/dashboard/assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor">
+						</span>
+					</a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm">
+								<img src="~/dashboard/assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
+							</div>
+							<div class="user-text">
+
+								@if (SignInManager.IsSignedIn(User))
+								{
+									var user = await UserManager.FindByEmailAsync(User.Identity.Name);
+
+									var roles = (await UserManager.GetRolesAsync(user)).FirstOrDefault();
+
+									if (roles == "Admin")
+									{
+										<h6>@User.FindFirst("UserFirstName").Value</h6>
+
+										<div>
+											<p class="text-muted mb-0">@roles</p>
+										</div>
+									}
+
+									else
+									{
+										var url = "/Account/Logout";
+
+										Context.Response.Redirect(url);
+									}
+
+								}
+								else
+								{
+									var url = "/Account/Logout";
+
+									Context.Response.Redirect(url);
+
+								}
+
+							</div>
+						</div>
+						<a class="dropdown-item" href="/Admin/UserManager/Profile/">My Profile</a>
+						<a class="dropdown-item" href="/Admin/UserManager/ChangePassword/">Change Password</a>
+						<a class="dropdown-item" href="~/Account/Logout/">Logout</a>
+					</div>
+				</li>
+
+			</ul>
+
+		</div>
+
+
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner scrollStyle">
+				<div id="sidebar-menu" class="sidebar-menu">
+
+					<ul>
+						<li class="menu-title">
+							<span>Main</span>
+						</li>
+
+						<li class="active">
+							<a href="@Url.Action("", "Dashboard")"><i class="fe fe-home"></i> <span>Dashboard</span></a>
+						</li>
+
+
+						<li class='sub-menu'>
+							<a href="#"><i class="fe fe-layout"></i> <span>Manage Booking</span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+
+							<ul>
+								<li><a href="@Url.Action("", "Appointments")">Booking</a></li>
+
+							</ul>
+						</li>
+
+
+						<li>
+							<a href="@Url.Action("", "Patients")"><i class="fe fe-user"></i> <span>Customers</span></a>
+						</li>
+
+						<li class='sub-menu'>
+
+							<a href="#"><i class="fe fe-clock"></i> <span>Parking Slots</span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+
+							<ul>
+								<li><a href="~/Admin/ParkingSlots">Create Slots</a></li>
+
+								<li><a href="@Url.Action("ViewSlots", "TimeSlots")">View Slots</a></li>
+
+							</ul>
+						</li>
+
+						<li>
+							<a href="@Url.Action("", "Enquiries")"><i class="fe fe-vector"></i> <span>Enquiries</span></a>
+						</li>
+						@*
+						<li class='sub-menu'>
+						<a href="#"><i class="fe fe-code"></i> <span>Blogs </span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+						<ul>
+						<li><a href="@Url.Action("CreateBlogs", "Blogs")">Create Blogs</a></li>
+						<li><a href="@Url.Action("", "Blogs")">Blogs</a></li>
+						</ul>
+						</li>*@
+
+						<li class="menu-title">
+							<span>Transactions</span>
+						</li>
+
+						<li class='sub-menu'>
+							<a href="#"><i class="fe fe-code"></i> <span>M-Pesa </span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+
+							<ul>
+								<li><a href="@Url.Action("", "MpesaTransactions")">Payments</a></li>
+								<li><a href="@Url.Action("ValidatePayment", "MpesaTransactions")">Validate Payment</a></li>
+								<li><a href="@Url.Action("CreatePayment", "MpesaTransactions")">Create Payment</a></li>
+
+							</ul>
+
+						</li>
+
+						<li class="menu-title">
+							<span>User</span>
+						</li>
+
+						<li class='sub-menu'>
+							<a href="#"><i class="fe fe-document"></i> <span>Manage Users </span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+
+
+							<ul>
+								<li><a href="@Url.Action("", "UserManager")">Users</a></li>
+								<li><a href="@Url.Action("Profile", "UserManager")">My Profile</a></li>
+
+							</ul>
+						</li>
+
+						<li class="menu-title">
+							<span>Reports</span>
+						</li>
+
+
+						<li class='sub-menu'>
+							<a href="#"><i class="fe fe-table"></i> <span> Manage Reports </span> <i class="fa fa-caret-down right ml-3 fa-1x"></i></a>
+							<ul>
+								<li><a href="@Url.Action("", "AppointmentReports")">Appointment </a></li>
+								<li><a href='#settings'>Patient Reports</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="right_col" role="main">
+			@RenderBody()
+		</div>
+
+	</div>
+
+
+	<div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="spinner text-center">
+						<div class="lds-ripple"><div></div><div></div></div>
+					</div>
+					<p class="text-center loader-text">Processing...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>
+
+
+<script src="~/SweetAlart/sweetalert.min.js"></script>
+
+<script src="~/dashboard/assets/cloudflare-static/rocket-loader.min.js" data-cf-settings="efa6f651afd8f2f4a356ad85-|49" defer=""></script>
+
+<script src="~/dashboard/assets/plugins/slimscroll/jquery.slimscroll.min.js" type="efa6f651afd8f2f4a356ad85-text/javascript"></script>
+
+<script src="~/booking/css/bootstrap.min.js"></script>
+
+<script src="~/dashboard/assets/js/bootstrap.bundle.min.js" type="efa6f651afd8f2f4a356ad85-text/javascript"></script>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+<script src="~/ParkingManager/getAppointments.js"></script>
+
+
+<style>
+	ul li a:hover {
+		background: #f8f8f8;
+		color: #515151;
+	}
+
+	ul li a .fa {
+		width: 16px;
+		text-align: center;
+		margin-right: 5px;
+		float: right;
+	}
+
+
+	ul li ul li a:hover {
+		background: #ebebeb;
+		border-left: 4px solid #3498db;
+	}
+
+	.scrollStyle {
+		max-height: 670px;
+		overflow-y: scroll;
+	}
+
+</style>
+
+
+<script>
+	$('.sub-menu ul').hide();
+
+	$(".sub-menu a").click(function () {
+
+		$(this).parent(".sub-menu").children("ul").slideToggle("100");
+
+		$(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+	});
+
+</script>
