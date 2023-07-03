@@ -166,7 +166,7 @@ namespace ParkingManager.BLL.Repositories.BookingModule
 			{
 				var data = (from b in context.Bookings
 
-							join s in context.ParkingSlots on b.ParkingSlotId equals s.Id   
+							join s in context.ParkingSlots on b.ParkingSlotId equals s.Id
 
 							join c in context.Customers on b.CustomerId equals c.Id
 
@@ -243,11 +243,30 @@ namespace ParkingManager.BLL.Repositories.BookingModule
 		{
 			try
 			{
-				var data = context.Customers.ToList();
 
-				var slot = mapper.Map<List<CustomerDTO>>(data);
+				var data = (from c in context.Customers
 
-				return slot;
+							join b in context.Bookings on c.Id equals b.CustomerId
+
+							select new CustomerDTO
+							{
+								Id = c.Id,
+
+								FirstName = c.FirstName,
+
+								LastName = c.LastName,
+
+								Email = c.Email,
+
+								PhoneNumber = c.PhoneNumber,
+
+								CreateDate = c.CreateDate,
+
+								CarRegNo = b.CarRegNo,
+							}
+							).ToList();
+
+				return data;
 			}
 			catch (Exception ex)
 			{

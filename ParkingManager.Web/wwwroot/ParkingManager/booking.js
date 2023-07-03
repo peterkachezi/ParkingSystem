@@ -27,7 +27,10 @@
         var txtlblName = $(this).val();
         $('#txtMySlot').text(txtlblName);
     });
-
+    $('#txtRegistrationNo').keyup(function (e) {
+        var txtlblName = $(this).val();
+        $('#txtRegistrationNo2').text(txtlblName);
+    });
 
 });
 function ShowLoader() {
@@ -293,6 +296,18 @@ function SubmitBooking() {
             position: 'top-end',
             type: "error",
             title: "Phone Number is a required field",
+            showConfirmButton: true,
+        });
+        return false;
+    }
+
+
+    if ($('#txtRegistrationNo').val() == '') {
+        $('#txtRegistrationNo').focus();
+        swal({
+            position: 'top-end',
+            type: "error",
+            title: "Car Registration No is a required field",
             showConfirmButton: true,
         });
         return false;

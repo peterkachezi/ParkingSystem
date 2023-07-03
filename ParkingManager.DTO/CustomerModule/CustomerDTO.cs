@@ -12,5 +12,6 @@ namespace ParkingManager.DTO.CustomerModule
         public string PhoneNumber { get; set; }      
         public DateTime CreateDate { get; set; }
         public string UpdatedBy { get; set; }
+        public string CarRegNo { get; set; }
     }
 }

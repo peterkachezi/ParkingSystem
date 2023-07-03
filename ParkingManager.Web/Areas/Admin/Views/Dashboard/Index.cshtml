@@ -20,7 +20,6 @@
 				<div class="col-sm-12">
 					<h3 class="page-title">
 
-
 						@if (SignInManager.IsSignedIn(User))
 						{
 
@@ -147,33 +146,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12 col-lg-6">
-
-				<div class="card card-chart">
-					<div class="card-header">
-						<h4 class="card-title">Revenue</h4>
-					</div>
-					<div class="card-body">
-						<div id="morrisArea"></div>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-md-12 col-lg-6">
-
-				<div class="card card-chart">
-					<div class="card-header">
-						<h4 class="card-title">Status</h4>
-					</div>
-					<div class="card-body">
-						<div id="morrisLine"></div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
+		
 
 		<div class="row">
 			<div class="col-md-6 d-flex">
@@ -263,13 +236,10 @@
 										@foreach (var item in Model.customers)
 										{
 											<tr>
-												<td>@count</td>
+												<td>@count</td>		
+												
+												<td>@item.FullName</td>
 
-												<td>
-													<h2 class="table-avatar">
-														<a href="/Admin/Patients/Profile/@item.Id">@item.FullName </a>
-													</h2>
-												</td>
 												<td>@item.PhoneNumber</td>
 
 												<td class="text-end">@item.CreateDate.ToShortDateString()</td>

@@ -107,6 +107,29 @@ namespace ParkingManager.Web.Areas.Admin.Controllers
 
                 return Json(new { success = false, responseText = "Something went wrong" });
             }
+        }     
+        
+        public async Task<ActionResult> CheckOut(Guid Id)
+        {
+            try
+            {
+                var results = await parkingSlotRepository.CheckOut(Id);
+
+                if (results == true)
+                {
+                    return Json(new { success = true, responseText = "You have successfully checked out, the slot is now available for booking " });
+                }
+                else
+                {
+                    return Json(new { success = false, responseText = "unable to chekout ,it could be in use by other files" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                return Json(new { success = false, responseText = "Something went wrong" });
+            }
         }
         public async Task<IActionResult> GetById(Guid Id)
         {

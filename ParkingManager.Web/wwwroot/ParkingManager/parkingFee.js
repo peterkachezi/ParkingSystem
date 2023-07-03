@@ -9,7 +9,7 @@ function HideLoader() {
     $("#loadMe").modal('hide');
 }
 
-$("#btnSubmitService").click(function () {
+$("#btnSubmit").click(function () {
 
 
 
@@ -36,15 +36,15 @@ $("#btnSubmitService").click(function () {
     }
 
 
-    $("#modaService").modal('hide');
+    $("#ModalCreateParkingFee").modal('hide');
 
-    var data = $("#frmServices").serialize();
+    var data = $("#frmAddParkingFee").serialize();
 
     $.ajax({
 
         type: "POST",
 
-        url: "/Admin/Services/Create/",
+        url: "/Admin/ParkingFees/Create/",
 
         data: data,
 
@@ -97,7 +97,7 @@ $("#btnSubmitService").click(function () {
 })
 
 
-$("#btnEdit").click(function () {
+$("#btnUpdate").click(function () {
 
 
 
@@ -125,15 +125,15 @@ $("#btnEdit").click(function () {
     }
 
 
-    $("#modaServiceUpdate").modal('hide');
+    $("#ModalUpdateParkingFee").modal('hide');
 
-    var data = $("#frmEditService").serialize();
+    var data = $("#frmUpdateParkingFee").serialize();
 
     $.ajax({
 
         type: "POST",
 
-        url: "/Admin/Services/Update/",
+        url: "/Admin/ParkingFees/Update/",
 
         data: data,
 
@@ -197,27 +197,25 @@ $("#btnEdit").click(function () {
 
 
 
-function GetService(e) {
+function GetRecord(e) {
 
     var id = e;
 
     console.log(id);
 
-    $.get("/Admin/Services/GetById/?Id=" + id, function (data, status) {
+    $.get("/Admin/ParkingFees/GetById/?Id=" + id, function (data, status) {
         console.log(data);
         if (data.data == false) {
             alert("Does not exist");
         } else {
 
-            $("#txtId").val(data.data.id);
-            $("#txtName1").val(data.data.name);
-            $("#txtAmount1").val(data.data.amount);
+            $("#txtId1").val(data.data.id);
 
+            $("#txtName1").val(data.data.parkingFee);
 
+            $('#ModalUpdateParkingFee').modal({ backdrop: 'static', keyboard: false })
 
-            $('#modaServiceUpdate').modal({ backdrop: 'static', keyboard: false })
-
-            $("#modaServiceUpdate").modal('show');
+            $("#ModalUpdateParkingFee").modal('show');
 
         }
 
@@ -253,7 +251,7 @@ function DeleteRecord(e) {
 
                 type: "GET",
 
-                url: "/Admin/Services/Delete/" + id,
+                url: "/Admin/ParkingFees/Delete/" + id,
 
                 success: function (response) {
 

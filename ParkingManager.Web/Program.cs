@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using ParkingManager.Web.Helpers;
 using ParkingManager.BLL.Repositories.ParkingSlotModule;
 using ParkingManager.BLL.Repositories.BookingModule;
+using ParkingManager.BLL.Repositories.ParkingChargeModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddTransient<IMessagingService, MessagingService>();
 builder.Services.AddTransient<IParkingSlotRepository, ParkingSlotRepository>();
 
 builder.Services.AddTransient<IBookingRepository, BookingRepository>();
+
+builder.Services.AddTransient<IParkingChargeRepository, ParkingChargeRepository>();
 
 
 //Cross-origin policy to accept request from localhost:8084.

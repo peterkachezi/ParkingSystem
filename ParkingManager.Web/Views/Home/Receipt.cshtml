@@ -84,7 +84,7 @@
                                     <td>Parking Space</td>
                                     <td class=""> @Model.parkingSlotDetails.Name</td>
                                     <td class="">@Model.bookingDetails.CreateDate.ToShortDateString()</td>
-                                    <td class="text-end">2323232t</td>
+                                    <td class="text-end">@ViewBag.Fees</td>
                                 </tr>
 
                             </tbody>
@@ -101,7 +101,7 @@
                             <tbody>
                                 <tr>
                                     <th>Subtotal:</th>
-                                    <td><span>Ksh 250</span></td>
+                                    <td><span>Ksh @ViewBag.Fees </span></td>
                                 </tr>
                                 <tr>
                                     <th>Discount:</th>
@@ -109,7 +109,7 @@
                                 </tr>
                                 <tr>
                                     <th>Total Amount:</th>
-                                    <td><span>Ksh 250</span></td>
+                                    <td><span>Ksh @ViewBag.Fees </span></td>
                                 </tr>
                             </tbody>
                         </table>

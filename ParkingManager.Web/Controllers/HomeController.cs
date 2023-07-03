@@ -8,123 +8,147 @@ using ParkingManager.BLL.Repositories.BookingModule;
 using ParkingManager.DTO.DashboardModule;
 using ParkingManager.DTO.BookingModule;
 using ParkingManager.BLL.Repositories.ParkingSlotModule;
+using ParkingManager.BLL.Repositories.ParkingChargeModule;
 
 namespace ParkingManager.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly IPaymentRepository paymentRepository;
+	public class HomeController : Controller
+	{
+		private readonly IPaymentRepository paymentRepository;
 
-        private readonly IBookingRepository bookingRepository;
+		private readonly IBookingRepository bookingRepository;
 
-        private readonly IParkingSlotRepository parkingSlotRepository;
+		private readonly IParkingSlotRepository parkingSlotRepository;
 
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(IParkingSlotRepository parkingSlotRepository, IBookingRepository bookingRepository, IPaymentRepository paymentRepository, ILogger<HomeController> logger)
-        {
-            _logger = logger;
+		private readonly IParkingChargeRepository parkingChargeRepository;
 
-            this.paymentRepository = paymentRepository;
+		private readonly ILogger<HomeController> _logger;
+		public HomeController(IParkingChargeRepository parkingChargeRepository, IParkingSlotRepository parkingSlotRepository, IBookingRepository bookingRepository, IPaymentRepository paymentRepository, ILogger<HomeController> logger)
+		{
+			_logger = logger;
 
-            this.bookingRepository = bookingRepository;
+			this.paymentRepository = paymentRepository;
 
-            this.parkingSlotRepository = parkingSlotRepository;
-        }
+			this.bookingRepository = bookingRepository;
 
-        public IActionResult Index()
-        {
-            try
-            {
-                //var blogs = await blogRepository.GetAll();
+			this.parkingSlotRepository = parkingSlotRepository;
 
-                return View();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+			this.parkingChargeRepository = parkingChargeRepository;
+		}
 
-                TempData["Error"] = "Something went wrong";
+		public async Task<IActionResult> Index()
+		{
+			try
+			{
+				var parkingFee = await parkingChargeRepository.GetRecentParkingFee();
 
-                return RedirectToAction("Index", "Home", new { area = "" });
-            }
-        }
+				if (parkingFee == null)
+				{
+					ViewBag.Fees = 10;
+				}
+				if (parkingFee != null)
+				{
+					ViewBag.Fees = parkingFee.ParkingFee;
+				}
+				return View();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
 
-        public async Task<IActionResult> Receipt(Guid Id)
-        {
-            try
-            {
-                BookingProfileDTO data = new BookingProfileDTO()
-                {
+				TempData["Error"] = "Something went wrong";
 
-                };
+				return RedirectToAction("Index", "Home", new { area = "" });
+			}
+		}
 
-                var booking = bookingRepository.GetById(Id);
+		public async Task<IActionResult> Receipt(Guid Id)
+		{
+			try
+			{
+				BookingProfileDTO data = new BookingProfileDTO()
+				{
 
-                var customer = bookingRepository.GetCustomerById(booking.CustomerId);
+				};
 
-                var slots =await parkingSlotRepository.GetById(booking.ParkingSlotId);
+				var parkingFee = await parkingChargeRepository.GetRecentParkingFee();
 
-                data.customerDetails = customer;
+				if (parkingFee == null)
+				{
+					ViewBag.Fees = 10;
+				}
+				if (parkingFee != null)
+				{
+					ViewBag.Fees = parkingFee.ParkingFee;
+				}
 
-                data.bookingDetails = booking;
+				var booking = bookingRepository.GetById(Id);
 
-                data.parkingSlotDetails = slots;
+				var customer = bookingRepository.GetCustomerById(booking.CustomerId);
 
-                return View(data);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+				var slots = await parkingSlotRepository.GetById(booking.ParkingSlotId);
 
-                TempData["Error"] = "Something went wrong";
+				data.customerDetails = customer;
 
-                return RedirectToAction("Index", "Home", new { area = "" });
-            }
-        }
-        public void SaveCallBack([FromBody] DarajaResponseAfterUserEntersPin darajaResponse)
-        {
-            try
-            {
-                if (darajaResponse.Body.stkCallback.ResultCode == 0)
-                {
-                    var transaction = new MpesaPaymentDTO
-                    {
-                        CheckoutRequestID = darajaResponse.Body.stkCallback.CheckoutRequestID,
+				data.bookingDetails = booking;
 
-                        MerchantRequestID = darajaResponse.Body.stkCallback.MerchantRequestID,
+				data.parkingSlotDetails = slots;
 
-                        ResultCode = darajaResponse.Body.stkCallback.ResultCode,
+				return View(data);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
 
-                        ResultDesc = darajaResponse.Body.stkCallback.ResultDesc,
+				TempData["Error"] = "Something went wrong";
 
-                        Amount = Convert.ToDecimal(darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("Amount")).FirstOrDefault().Value.ToString()),
+				return RedirectToAction("Index", "Home", new { area = "" });
+			}
+		}
+		public void SaveCallBack([FromBody] DarajaResponseAfterUserEntersPin darajaResponse)
+		{
+			try
+			{
+				if (darajaResponse.Body.stkCallback.ResultCode == 0)
+				{
+					var transaction = new MpesaPaymentDTO
+					{
+						CheckoutRequestID = darajaResponse.Body.stkCallback.CheckoutRequestID,
 
-                        TransactionNumber = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("MpesaReceiptNumber")).FirstOrDefault().Value.ToString(),
+						MerchantRequestID = darajaResponse.Body.stkCallback.MerchantRequestID,
 
-                        TransactionDate = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("TransactionDate")).FirstOrDefault().Value.ToString(),
+						ResultCode = darajaResponse.Body.stkCallback.ResultCode,
 
-                        PhoneNumber = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("PhoneNumber")).FirstOrDefault().Value.ToString(),
+						ResultDesc = darajaResponse.Body.stkCallback.ResultDesc,
 
-                    };
+						Amount = Convert.ToDecimal(darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("Amount")).FirstOrDefault().Value.ToString()),
 
-                    paymentRepository.SaveSTKCallBackResponse(transaction);
+						TransactionNumber = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("MpesaReceiptNumber")).FirstOrDefault().Value.ToString(),
 
-                }
+						TransactionDate = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("TransactionDate")).FirstOrDefault().Value.ToString(),
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+						PhoneNumber = darajaResponse.Body.stkCallback.CallbackMetadata.Item.Where(p => p.Name.Contains("PhoneNumber")).FirstOrDefault().Value.ToString(),
 
-                // return null;
-            }
-        }
+					};
+
+					paymentRepository.SaveSTKCallBackResponse(transaction);
+
+				}
+
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				// return null;
+			}
+		}
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }

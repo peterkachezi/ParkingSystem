@@ -11,6 +11,7 @@ namespace ParkingManager.DAL.Modules
         public string? UpdatedBy { get; set; }
         public string? CreatedBy { get; set; }
 		public string ReceiptNumber { get; set; }
+		public string CarRegNo { get; set; }
 		public virtual ParkingSlot ParkingSlot { get; set; } = null!;
 		public virtual Customer Customer { get; set; } = null!;
 

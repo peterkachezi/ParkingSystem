@@ -17,5 +17,6 @@
         public string CreatedBy { get; set; }
         public string ReceiptNumber { get; set; }
         public string SlotName { get; set; }
+        public string CarRegNo { get; set; }
     }
 }

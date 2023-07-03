@@ -4,6 +4,7 @@ using ParkingManager.DTO.ApplicationUserModule;
 using ParkingManager.DTO.BookingModule;
 using ParkingManager.DTO.CustomerModule;
 using ParkingManager.DTO.MpesaStkModule;
+using ParkingManager.DTO.ParkingChargeModule;
 using ParkingManager.DTO.ParkingSlotModule;
 
 
@@ -14,6 +15,8 @@ namespace ParkingManager.DAL.MapperProfiles
 	{
 		public MapperProfile()
 		{
+			CreateMap<ParkingCharge, ParkingChargeDTO>().ReverseMap();
+
 			CreateMap<Booking, BookingDTO>().ReverseMap();
 
 			CreateMap<AppUser, ApplicationUserDTO>().ReverseMap();

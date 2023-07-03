@@ -28,8 +28,9 @@
 								<th>Full Name</th>
 								<th>Phone Number</th>
 								<th>Email</th>
+								<th>Car Reg No</th>
 								<th>Entry Date</th>
-							@*	<th>Action</th>*@
+								@*	<th>Action</th>*@
 							</tr>
 						</thead>
 						<tbody>
@@ -44,14 +45,14 @@
 
 										<td>@item.FullName</td>
 										<td>@item.PhoneNumber</td>
-										<td>@item.Email</td>									
-
+										<td>@item.Email</td>
+										<td>@item.CarRegNo</td>
 										<td>@item.CreateDate.ToShortDateString()</td>
-@*
-										<td>
-											<a class="btn btn-success btn btn-sm" href="#" onclick="GetRecord('@item.Id')" value=""><i class="fa fa-edit"></i></a>
-											<a class="btn btn-danger btn btn-sm" href="#" onclick="GetRecord1('@item.Id')" value=""><i class="fa fa-trash"></i></a>
-										</td>*@
+										@*
+								<td>
+								<a class="btn btn-success btn btn-sm" href="#" onclick="GetRecord('@item.Id')" value=""><i class="fa fa-edit"></i></a>
+								<a class="btn btn-danger btn btn-sm" href="#" onclick="GetRecord1('@item.Id')" value=""><i class="fa fa-trash"></i></a>
+								</td>*@
 
 									</tr>
 									count++;

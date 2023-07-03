@@ -53,6 +53,11 @@ namespace ParkingManager.Web.Controllers
 				if (string.IsNullOrEmpty(bookingDTO.PhoneNumber))
 				{
 					return Json(new { success = false, responseText = "Please enter Phone Number" });
+				}	
+				
+				if (string.IsNullOrEmpty(bookingDTO.CarRegNo))
+				{
+					return Json(new { success = false, responseText = "Please enter Car Reg No" });
 				}
 
 				var results = await bookingRepository.Create(bookingDTO);
