@@ -188,6 +188,10 @@ namespace ParkingManager.BLL.Repositories.BookingModule
 
 								SlotName = s.Name,
 
+                                PhoneNumber = c.PhoneNumber,
+
+                                Email = c.Email,
+
 							}).ToListAsync();
 
 				var k = await data;

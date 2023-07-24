@@ -56,7 +56,7 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="Areas\Admin\Views\AppointmentReports\Index.cshtml" />
+    <None Include="Areas\Admin\Views\BookingReports\Index.cshtml" />
     <None Include="Areas\Admin\Views\Appointments\ApprovedAppointments.cshtml" />
     <None Include="Areas\Admin\Views\Appointments\Index.cshtml" />
     <None Include="Areas\Admin\Views\Appointments\Test.cshtml" />
